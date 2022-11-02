@@ -5,11 +5,10 @@ declare(strict_types=1);
 if (isset($_POST['enviar'])) {
     $data['errores'] = checkForm($_POST);
     $data['input'] = filter_var_array($_POST);
-    var_dump($data);
     if (count($data['errores']) === 0) {
         $jsonArray = json_decode($_POST['json_notas'], true);
-        //$resultado = $jsonArray;
-        //$data['resultado'] = $resultado;
+        $resultado = calcular($jsonArray);
+        $data['resultado'] = $resultado;
     }
 }
 
@@ -50,6 +49,69 @@ function checkForm(array $post): array {
         }
     }
     return $errores;
+}
+
+function calcular($array): array {
+    $resultado = [];
+    $alumnado = [];
+    foreach ($array as $asignatura => $alumnos) {
+        $suspensos = 0;
+        $aprobados = 0;
+        $notaMedia = 0;
+        $somaNotaMedias = 0;
+        $somaNotas = 0;
+        $max = [
+            'alumno' => '',
+            'nota' => -1
+        ];
+        $min = [
+            'alumno' => '',
+            'nota' => 11
+        ];
+        var_dump("ASIGNATURA: " . $asignatura);
+        foreach ($alumnos as $nombre => $notas) {
+            if (!isset($alumnado[$nombre])) {
+                $alumnado[$nombre] = ['aprobados' => 0, 'suspensos' => 0];
+            }
+            foreach ($notas as $nota) {
+                $somaNotas += $nota;
+            }
+            $notaMedia = $somaNotas / count($notas);
+            $somaNotaMedias += $notaMedia;
+            if ($notaMedia < 5) {
+                $suspensos++;
+                $alumnado[$nombre]['suspensos']++;
+            } else {
+                $aprobados++;
+                $alumnado[$nombre]['aprobados']++;
+            }
+
+            $somaNotas = 0;
+            if ($notaMedia > $max['nota']) {
+                $max['alumno'] = $nombre;
+                $max['nota'] = $notaMedia;
+            }
+            if ($notaMedia < $min['nota']) {
+                $min['alumno'] = $nombre;
+                $min['nota'] = $notaMedia;
+            }
+        }
+        var_dump("Nota Media: " . $somaNotaMedias / count($alumnos));
+        var_dump($min);
+        var_dump($max);
+    }
+    if (count($alumnos) > 0) {
+        $resultado[$asignatura]['media'] = $somaNotaMedias / count($alumnos);
+        $resultado[$asignatura]['max'] = $max;
+        $resultado[$asignatura]['min'] = $min;
+    } else {
+        $resultado[$asignatura]['media'] = 0;
+    }
+    $resultado[$asignatura]['suspensos'] = $suspensos;
+    $resultado[$asignatura]['aprobados'] = $aprobados;
+    var_dump($resultado);
+    var_dump($alumnado);
+    return array('modulos' => $resultado, 'alumnos' => $alumnado);
 }
 
 include 'views/templates/header.php';
