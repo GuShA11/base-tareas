@@ -68,7 +68,7 @@ function calcular($array): array {
             'alumno' => '',
             'nota' => 11
         ];
-        var_dump("ASIGNATURA: " . $asignatura);
+//        var_dump("ASIGNATURA: " . $asignatura);
         foreach ($alumnos as $nombre => $notas) {
             if (!isset($alumnado[$nombre])) {
                 $alumnado[$nombre] = ['aprobados' => 0, 'suspensos' => 0];
@@ -96,21 +96,21 @@ function calcular($array): array {
                 $min['nota'] = $notaMedia;
             }
         }
-        var_dump("Nota Media: " . $somaNotaMedias / count($alumnos));
-        var_dump($min);
-        var_dump($max);
+//        var_dump("Nota Media: " . $somaNotaMedias / count($alumnos));
+//        var_dump($min);
+//        var_dump($max);
+        if (count($alumnos) > 0) {
+            $resultado[$asignatura]['media'] = $somaNotaMedias / count($alumnos);
+            $resultado[$asignatura]['max'] = $max;
+            $resultado[$asignatura]['min'] = $min;
+        } else {
+            $resultado[$asignatura]['media'] = 0;
+        }
+        $resultado[$asignatura]['suspensos'] = $suspensos;
+        $resultado[$asignatura]['aprobados'] = $aprobados;
     }
-    if (count($alumnos) > 0) {
-        $resultado[$asignatura]['media'] = $somaNotaMedias / count($alumnos);
-        $resultado[$asignatura]['max'] = $max;
-        $resultado[$asignatura]['min'] = $min;
-    } else {
-        $resultado[$asignatura]['media'] = 0;
-    }
-    $resultado[$asignatura]['suspensos'] = $suspensos;
-    $resultado[$asignatura]['aprobados'] = $aprobados;
-    var_dump($resultado);
-    var_dump($alumnado);
+//    var_dump($resultado);
+//    var_dump($alumnado);
     return array('modulos' => $resultado, 'alumnos' => $alumnado);
 }
 
