@@ -1,18 +1,18 @@
 <!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<div class="d-sm-flex align-items-center justify-content-between mb-4"><h1 class="h3 mb-0 texte-grey-800">Calculos Notas</h1></div>
 
     <!-- Content Row -->
 
     <div class="row">
-        <?php
-        if (isset($data['resultado'])) {
-            ?>
-            <div class="col-12">
+         <?php
+       if (isset($data['resultado'])) {
+         ?>
+          <div class="col-12">
                 <div class="card shadow mb-4">
                     <div
                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Resultados por módulo</h6>                                    
-                    </div>
+                    </div><!--
                     <!-- Card Body -->
                     <div class="card-body">
 
@@ -52,7 +52,7 @@
         if (isset($data['resultado'])) {
             ?>
             <!--Para parte 2 -->
-            <div class="col-lg-3 col-12">
+            <div class="col-lg-6 col-12">
                 <div class="alert alert-success">
                     <ol>
                         <?php
@@ -65,12 +65,12 @@
                     </ol>
                 </div>
             </div>
-            <div class="col-lg-3 col-12">
-                <div class="alert alert-info">
+            <div class="col-lg-6 col-12">
+                <div class="alert alert-warning">
                     <ol>
                         <?php
                         foreach ($resultado['alumnos'] as $nombre => $datos) {
-                            if ($datos['suspensos'] >= 0 && $datos['suspensos'] <= 1) {
+                            if ($datos['suspensos'] >= 1) {
                                 echo "<li>$nombre</li>";
                             }
                         }
@@ -78,8 +78,8 @@
                     </ol>
                 </div>
             </div>
-            <div class="col-lg-3 col-12">
-                <div class="alert alert-warning">
+            <div class="col-lg-6 col-12">
+                <div class="alert alert-info">
                     <ol>
                         <?php
                         foreach ($resultado['alumnos'] as $nombre => $datos) {
@@ -91,7 +91,7 @@
                     </ol>
                 </div>
             </div>
-            <div class="col-lg-3 col-12">
+            <div class="col-lg-6 col-12">
                 <div class="alert alert-danger">
                     <ol>
                         <?php
@@ -107,29 +107,29 @@
             <?php
         }
         ?>
-
         <!-- comment -->
-        <div class="col-12">
-            <div class="card shadow mb-4">
-                <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Array de notas</h6>                                    
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <!--<form action="./?sec=formulario" method="post">                   -->
-                    <form method="post" action="./?sec=ejercicioCalculoNotas">
-                        <!--<input type="hidden" name="sec" value="iterativas01" />-->
-                        <div class="mb-3">
-                            <label for="texto">Json Notas:</label>
-                            <textarea class="form-control" id="json_notas" name="json_notas" rows="10"><?php echo isset($data['input']['json_notas']) ? $data['input']['json_notas'] : ''; ?></textarea>
-                            <p class="text-danger small"><?php echo isset($data['errores']['json_notas']) ? $data['errores']['json_notas'] : ''; ?></p>
-                        </div>                    
-                        <div class="mb-3">
-                            <input type="submit" value="Enviar" name="enviar" class="btn btn-primary"/>
-                        </div>
-                    </form>
-                </div>
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Array de notas</h6>                                    
             </div>
-        </div>                        
-    </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <!--<form action="./?sec=formulario" method="post">                   -->
+                <form method="post" action="./?sec=calculoNotas.goncalo">
+                    <!--<input type="hidden" name="sec" value="iterativas01" />-->
+                    <div class="mb-3">
+                        <label for="texto">Json Notas:</label>
+                        <textarea class="form-control" id="json_notas" name="json_notas" rows="10"><?php echo isset($data['input']['json_notas']) ? $data['input']['json_notas'] : '';?></textarea>
+                        <p class="text-danger small"><?php echo isset($data['errores']['json_notas']) ? $data['errores']['json_notas'] : ''; ?></p>
+                    </div>                    
+                    <div class="mb-3">
+                        <input type="submit" value="Enviar" name="enviar" class="btn btn-primary"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>                        
+</div>
+

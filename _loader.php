@@ -1,9 +1,9 @@
 <?php
 //Hace de router aunque es muy inseguro ya que escanea el directorio models
 //En clases posteriores veremos como mejorar esto y hacer un router de verdad
-$filename = isset($_GET['sec']) ? $_GET['sec'] : 'ejercicioCalculoNotas';
+$filename = isset($_GET['sec']) ? $_GET['sec'] : 'calculoNotas.goncalo';
 if(substr($filename, 0, 1) == "_" || $filename == "index" || !file_exists(getControllerName($filename))){
-    $filename = "ejercicioCalculoNotas";
+    $filename = "calculoNotas.goncalo";
 }
 require_once getControllerName($filename);
 

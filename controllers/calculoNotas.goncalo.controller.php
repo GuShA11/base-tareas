@@ -27,16 +27,17 @@ function checkForm(array $post): array {
                     $erroresJson .= "El nombre del módulo no puede estar vacío<br>";
                 } else {
                     foreach ($alumnos as $nombre => $notas) {
+                        if (empty($nombre)) {
+                            $erroresJson .= "El módulo '" . htmlentities($modulo) . "' tiene un alumno sin nombre<br>";
+                        }
                         foreach ($notas as $nota) {
-                            if (empty($nombre)) {
-                                $erroresJson .= "El módulo '" . htmlentities($modulo) . "' tiene un alumno sin nombre<br>"; //Equivale a filter_var($modulo, FILTER_SANITIZE_SPECIAL_CHARS);
+                            if ($nota === null) {
+                                $erroresJson .= "El módulo '" . htmlentities($modulo) . "' el/la alumno/a '" . htmlentities($nombre) . "' tiene la nota \"null\" que no es un número<br>";
+                            } else if (!is_numeric($nota)) {
+                                $erroresJson .= "El módulo '" . htmlentities($modulo) . "' el/la alumno/a '" . htmlentities($nombre) . "' tiene la nota '" . htmlentities($nota) . "' que no es un número<br>";
                             } else {
-                                if (!is_numeric($nota)) {
-                                    $erroresJson .= "El módulo '" . htmlentities($modulo) . "' el/la alumno/a '" . htmlentities($nombre) . "' tiene la nota '" . htmlentities($nota) . "' que no es un numero<br>"; //Equivale a filter_var($modulo, FILTER_SANITIZE_SPECIAL_CHARS);
-                                } else {
-                                    if ($nota < 0 || $nota > 10) {
-                                        $erroresJson .= "Módulo '" . htmlentities($modulo) . "' alumno '" . htmlentities($nombre) . "' tiene una nota de " . $nota . "<br>"; //Equivale a filter_var($modulo, FILTER_SANITIZE_SPECIAL_CHARS);
-                                    }
+                                if ($nota < 0 || $nota > 10) {
+                                    $erroresJson .= "Módulo '" . htmlentities($modulo) . "' alumno '" . htmlentities($nombre) . "' tiene una nota de " . $nota . "<br>";
                                 }
                             }
                         }
@@ -68,7 +69,6 @@ function calcular($array): array {
             'alumno' => '',
             'nota' => 11
         ];
-//        var_dump("ASIGNATURA: " . $asignatura);
         foreach ($alumnos as $nombre => $notas) {
             if (!isset($alumnado[$nombre])) {
                 $alumnado[$nombre] = ['aprobados' => 0, 'suspensos' => 0];
@@ -96,9 +96,6 @@ function calcular($array): array {
                 $min['nota'] = $notaMedia;
             }
         }
-//        var_dump("Nota Media: " . $somaNotaMedias / count($alumnos));
-//        var_dump($min);
-//        var_dump($max);
         if (count($alumnos) > 0) {
             $resultado[$asignatura]['media'] = $somaNotaMedias / count($alumnos);
             $resultado[$asignatura]['max'] = $max;
@@ -109,11 +106,9 @@ function calcular($array): array {
         $resultado[$asignatura]['suspensos'] = $suspensos;
         $resultado[$asignatura]['aprobados'] = $aprobados;
     }
-//    var_dump($resultado);
-//    var_dump($alumnado);
     return array('modulos' => $resultado, 'alumnos' => $alumnado);
 }
 
 include 'views/templates/header.php';
-include 'views/ejercicioCalculoNotas.view.php';
+include 'views/calculoNotas.goncalo.view.php';
 include 'views/templates/footer.php';
